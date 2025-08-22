@@ -1,0 +1,4 @@
+[submodule "ghostpdl"]
+	path = ghostpdl
+	url = https://github.com/ArtifexSoftware/ghostpdl.git
+	ignore = dirty
