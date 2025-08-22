@@ -14,6 +14,11 @@
   "author": "okathira",
   "type": "module",
   "main": "dist/gs.js",
+  "exports": {
+    ".": "./dist/gs.js",
+    "./gs.js": "./dist/gs.js",
+    "./gs.wasm": "./dist/gs.wasm"
+  },
   "files": [
     "dist/",
     "README.md",
@@ -24,9 +29,10 @@
     "provenance": true
   },
   "scripts": {
-    "build:docker-ps": "docker run --rm -v ${pwd}:/src emscripten/emsdk bash -lc './compile.sh'",
-    "build:docker-cmd": "docker run --rm -v %cd%:/src emscripten/emsdk bash -lc './compile.sh'",
+    "build:docker-ps": "docker run --rm -v ${pwd}:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
+    "build:docker-cmd": "docker run --rm -v %cd%:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
     "build": "./compile.sh",
-    "deploy:dry": "npm publish --dry-run"
+    "deploy:dry": "npm publish --dry-run",
+    "deploy": "npm publish --access public"
   }
 }

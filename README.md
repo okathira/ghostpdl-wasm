@@ -4,7 +4,7 @@ This package provides a WebAssembly (WASM) build of GhostPDL (Ghostscript). It i
 
 ## Traceability
 
-Prioritizes supply‑chain traceability: pinned submodules/toolchains, published build metadata and SHA‑256 checksums, and npm provenance. You can verify each release by rebuilding with the same workflow and confirming that the hashes of dist/gs.js and dist/gs.wasm match, and by reviewing the CI configuration and source code.
+This project prioritizes supply‑chain traceability. I pin submodules and toolchains, publish build metadata and SHA‑256 checksums, and enable npm provenance. You can verify each release by rebuilding with the same workflow and confirming that the hashes of `dist/gs.js` and `dist/gs.wasm` match, and by reviewing the CI configuration and source code.
 
 ## Installation
 
@@ -14,18 +14,22 @@ npm install @okathira/ghostpdl-wasm
 
 ## Example Usage
 
+The Emscripten FS and callMain APIs are exported.
+
+### Basic usage
+
 ```js
 import loadWASM from "@okathira/ghostpdl-wasm";
 
 const run = async () => {
-  // load WASM
+  // Load WASM
   const Module = await loadWASM();
 
-  // read source pdf file
+  // Read the source PDF file
   const buffer = await fetch("./example.pdf").then((res) => res.arrayBuffer());
   Module.FS.writeFile("example.pdf", new Uint8Array(buffer));
 
-  // convert pdf to pdf
+  // Convert PDF to PDF (example settings)
   Module.callMain([
     "-sDEVICE=pdfwrite",
     "-dPDFSETTINGS=/ebook",
@@ -35,46 +39,59 @@ const run = async () => {
     "example.pdf",
   ]);
 
-  // read output pdf file
+  // Read the output PDF file
   const output = Module.FS.readFile("example_output.pdf", {
     encoding: "binary",
   });
 
-  // create file object
+  // Create a downloadable file
   const file = new File([output], "example_output.pdf", {
     type: "application/pdf",
   });
 
-  // create download button
+  // Create a download button
   const a = document.createElement("a");
   a.href = URL.createObjectURL(file);
   a.download = file.name;
   a.innerText = "Download File";
   document.body.appendChild(a);
 
-  // list files in the root directory
+  // List files in the root directory
   console.log(Module.FS.readdir("/"));
 };
 
 run();
 ```
 
+### Build artifacts can be imported directly
+
+```js
+import wasm from "@okathira/ghostpdl-wasm/gs.wasm";
+import js from "@okathira/ghostpdl-wasm/gs.js"; // the same as `import loadWASM from "@okathira/ghostpdl-wasm";`
+```
+
 ## How to build
 
-This repository uses git submodule to handle ghostpdl.
+This repository uses a git submodule for GhostPDL.
 
-### Build with docker on Windows
+### Build with Docker on Windows
 
 ```bash
 npm run build:docker-cmd
 ```
 
+## TODO
+
+- [ ] Optimize build
+- [ ] Auto-update dependencies on GitHub Actions
+- [ ] Add type definitions
+
 ## License
 
-### ghostpdl-wasm (This WASM package)
+### ghostpdl-wasm (this WASM package)
 
-This package is licensed under [the AGPL license](./LICENSE).
+This package is licensed under the AGPLv3. See [LICENSE](./LICENSE).
 
-### ghostpdl (Original Ghostscript)
+### ghostpdl (original Ghostscript)
 
-Original Ghostscript is licensed under [the AGPL license](https://github.com/ArtifexSoftware/ghostpdl).
+GhostPDL/Ghostscript is licensed under the AGPLv3. See the original repository: <https://github.com/ArtifexSoftware/ghostpdl>
