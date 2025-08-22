@@ -13,7 +13,7 @@ echo "2. Cleaning previous build..."
 make distclean 2>/dev/null || true
 
 echo "3. Installing autoconf..."
-apt update && apt install --yes autoconf
+apt update && apt install --yes autoconf=2.71-2
 
 echo "4. Configuring for WebAssembly..."
 emconfigure ./autogen.sh \
