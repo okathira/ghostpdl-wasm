@@ -28,6 +28,14 @@
     "access": "public",
     "provenance": true
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/okathira/ghostpdl-wasm"
+  },
+  "bugs": {
+    "url": "https://github.com/okathira/ghostpdl-wasm/issues"
+  },
+  "homepage": "https://github.com/okathira/ghostpdl-wasm",
   "scripts": {
     "build:docker-ps": "docker run --rm -v ${pwd}:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
     "build:docker-cmd": "docker run --rm -v %cd%:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
