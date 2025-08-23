@@ -1,0 +1,47 @@
+name: build-and-release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write # create release and upload assets
+  id-token: write # npm provenance
+
+jobs:
+  check:
+    uses: ./.github/workflows/check.yml
+
+  build:
+    needs: check
+    runs-on: ubuntu-latest
+    container: emscripten/emsdk:4.0.13
+    steps:
+      - name: Download artifacts from check
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-build
+          path: dist
+
+      - name: Generate checksums
+        run: sha256sum dist/gs.js dist/gs.wasm > SHA256SUMS
+
+      - name: Create GitHub Release and upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/gs.js
+            dist/gs.wasm
+            SHA256SUMS
+
+      - name: Setup Node.js for npm publish
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Publish to npm (with provenance)
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm run deploy

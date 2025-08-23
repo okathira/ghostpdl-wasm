@@ -25,7 +25,8 @@
     "LICENSE"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "build:docker-ps": "docker run --rm -v ${pwd}:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
