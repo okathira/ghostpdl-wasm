@@ -82,9 +82,10 @@ npm run build:docker-cmd
 
 ## TODO
 
-- [ ] Optimize build
+- [ ] Optimize artifacts
 - [ ] Auto-update dependencies on GitHub Actions
 - [ ] Add type definitions
+- [ ] Optimize build process (e.g. remove apt-get install)
 
 ## License
 

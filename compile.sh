@@ -13,10 +13,11 @@ echo "2. Cleaning previous build..."
 make distclean 2>/dev/null || true
 
 echo "3. Installing autoconf..."
-apt update && apt install --yes autoconf=2.71-2
+apt-get update && apt-get install --yes autoconf=2.71-2
 
 echo "4. Configuring for WebAssembly..."
-emconfigure ./autogen.sh \
+NOCONFIGURE=1 ./autogen.sh
+emconfigure ./configure \
     --host=$(emcc -dumpmachine) \
     --build=$(./config.guess) \
     LDFLAGS='-sFILESYSTEM=1 -sEXPORTED_RUNTIME_METHODS=FS,callMain -sMODULARIZE=1 -sEXPORT_ES6 -sINVOKE_RUN=0 -sALLOW_MEMORY_GROWTH=1'
