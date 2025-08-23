@@ -38,7 +38,30 @@ jobs:
   check:
     needs: prepare
     if: needs.prepare.outputs.should_release == 'true'
-    uses: ./.github/workflows/check.yml
+    runs-on: ubuntu-latest
+    container: emscripten/emsdk:4.0.13
+    steps:
+      - name: Checkout (with submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Build
+        run: ./compile.sh
+
+      - name: Verify outputs exist
+        run: |
+          test -f dist/gs.js
+          test -f dist/gs.wasm
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-build
+          path: |
+            dist/gs.js
+            dist/gs.wasm
 
   release:
     needs: [prepare, check]
