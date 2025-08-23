@@ -18,6 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     container: emscripten/emsdk:4.0.13
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Download artifacts from check
         uses: actions/download-artifact@v4
         with:
