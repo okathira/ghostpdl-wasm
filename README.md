@@ -4,7 +4,14 @@ This package provides a WebAssembly (WASM) build of GhostPDL (Ghostscript). It i
 
 ## Traceability
 
-This project prioritizes supply‑chain traceability. I pin submodules and toolchains, publish build metadata and SHA‑256 checksums, and enable npm provenance. You can verify each release by rebuilding with the same workflow and confirming that the hashes of `dist/gs.js` and `dist/gs.wasm` match, and by reviewing the CI configuration and source code.
+This project prioritizes supply‑chain traceability and publishes artifacts with npm Package Provenance.
+
+Provenance provides a cryptographically verifiable link from the published package back to:
+
+- the source repository and the exact commit that produced it,
+- the GitHub Actions workflow/job that built and published it.
+
+To verify a release, open the npm package page for that version and view its Provenance. Confirm that it references this repository (okathira/ghostpdl-wasm), the exact commit SHA that published the version, and the GitHub Actions workflow defined in .github/workflows/release.yml.
 
 ## Installation
 
