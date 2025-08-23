@@ -2,42 +2,15 @@ name: build-and-release
 
 on:
   push:
-    branches: [main]
+    tags:
+      - "v*"
 
 permissions:
   contents: write # create release and upload assets
   id-token: write # npm provenance
 
 jobs:
-  prepare:
-    runs-on: ubuntu-latest
-    outputs:
-      should_release: ${{ steps.ver.outputs.should_release }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Detect version change
-        id: ver
-        run: |
-          PREV_SHA="${{ github.event.before }}"
-          if git cat-file -e "$PREV_SHA^{commit}" 2>/dev/null; then
-            git show "$PREV_SHA:package.json" > prev.json || echo '{}' > prev.json
-          else
-            echo '{}' > prev.json
-          fi
-          CUR=$(node -p "require('./package.json').version || ''") || CUR=""
-          PREV=$(node -e "try{console.log(JSON.parse(require('fs').readFileSync('prev.json','utf8')).version||'')}catch(e){console.log('')}")
-          if [ -n "$CUR" ] && [ "$CUR" != "$PREV" ]; then
-            echo "should_release=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "should_release=false" >> "$GITHUB_OUTPUT"
-          fi
-
   check:
-    needs: prepare
-    if: needs.prepare.outputs.should_release == 'true'
     runs-on: ubuntu-latest
     container: emscripten/emsdk:4.0.13
     steps:
@@ -64,8 +37,7 @@ jobs:
             dist/gs.wasm
 
   release:
-    needs: [prepare, check]
-    if: needs.prepare.outputs.should_release == 'true'
+    needs: [check]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -82,6 +54,8 @@ jobs:
       - name: Create GitHub Release and upload assets
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
           files: |
             dist/gs.js
             dist/gs.wasm
