@@ -20,10 +20,9 @@ NOCONFIGURE=1 ./autogen.sh
 emconfigure ./configure \
     --host=$(emcc -dumpmachine) \
     --build=$(./config.guess) \
-    LDFLAGS='-sFILESYSTEM=1 -sEXPORTED_RUNTIME_METHODS=FS,callMain -sMODULARIZE=1 -sEXPORT_ES6 -sINVOKE_RUN=0 -sALLOW_MEMORY_GROWTH=1'
-    # CFLAGS='-O3 -g0' \
-    # CXXFLAGS='-O3 -g0' \
-    # LDFLAGS='-O3 -g0 -sFILESYSTEM=1 -sEXPORTED_RUNTIME_METHODS=FS,callMain -sMODULARIZE=1 -sEXPORT_ES6 -sINVOKE_RUN=0 -sALLOW_MEMORY_GROWTH=1'
+    CFLAGS='-Os -g0' \
+    CXXFLAGS='-Os -g0' \
+    LDFLAGS='-Os -g0 -sFILESYSTEM=1 -sEXPORTED_RUNTIME_METHODS=FS,callMain -sMODULARIZE=1 -sEXPORT_ES6 -sINVOKE_RUN=0 -sALLOW_MEMORY_GROWTH=1'
 
 echo "5. Building with Emscripten..."
 emmake make -j$(nproc)
