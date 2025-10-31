@@ -42,6 +42,7 @@
     "build": "./compile.sh",
     "deploy:dry": "npm publish --dry-run",
     "release": "npm publish --access public",
-    "prerelease": "npm publish --access public --tag next"
+    "prerelease": "npm publish --access public --tag next",
+    "deploy": "npm run release"
   }
 }
