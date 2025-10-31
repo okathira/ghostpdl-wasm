@@ -45,6 +45,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Determine release type
+        id: release_meta
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if [[ "$VERSION" == *-* ]]; then
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Download artifacts from check
         uses: actions/download-artifact@v4
         with:
@@ -56,6 +67,7 @@ jobs:
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
+          prerelease: ${{ steps.release_meta.outputs.prerelease == 'true' }}
           files: |
             dist/gs.js
             dist/gs.wasm
@@ -69,4 +81,10 @@ jobs:
       - name: Publish to npm (with provenance)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npm run deploy
+          PRERELEASE: ${{ steps.release_meta.outputs.prerelease }}
+        run: |
+          if [ "$PRERELEASE" = "true" ]; then
+            npm run deploy:next
+          else
+            npm run deploy
+          fi
