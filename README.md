@@ -77,7 +77,7 @@ import wasm from "@okathira/ghostpdl-wasm/gs.wasm";
 import js from "@okathira/ghostpdl-wasm/gs.js"; // the same as `import loadWASM from "@okathira/ghostpdl-wasm";`
 ```
 
-## How to build
+## How to test locally
 
 This repository uses a git submodule for GhostPDL.
 
@@ -87,9 +87,33 @@ This repository uses a git submodule for GhostPDL.
 npm run build:docker-cmd
 ```
 
+### Use as a npm package
+
+To verify the package locally before publishing to npm, install it from the source directory into another project.
+
+1. Register the package globally with `npm link`:
+
+   ```sh
+   npm link
+   ```
+
+   This makes `@okathira/ghostpdl-wasm` available as a global link.
+
+2. In the project where you want to test the package, link it as a dependency:
+
+   ```sh
+   npm link @okathira/ghostpdl-wasm
+   ```
+
+   To remove the link later, run `npm unlink @okathira/ghostpdl-wasm` in the consumer project and `npm unlink` in this repository if needed.
+
+After linking, import `@okathira/ghostpdl-wasm` in the consumer project as you would with the published package.
+
 ## TODO
 
 - [ ] Optimize artifacts
+  - [x] ghostscript build options
+  - [ ] emscripten build options
 - [ ] Auto-update dependencies on GitHub Actions
 - [ ] Add type definitions
 - [ ] Optimize build process (e.g. remove apt-get install)
