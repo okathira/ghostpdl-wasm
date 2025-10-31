@@ -41,8 +41,7 @@
     "build:docker-cmd": "docker run --rm -v %cd%:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
     "build": "./compile.sh",
     "deploy:dry": "npm publish --dry-run",
-    "release": "npm publish --access public",
-    "prerelease": "npm publish --access public --tag next",
-    "deploy": "npm run release"
+    "deploy": "npm publish --access public",
+    "deploy:next": "npm publish --access public --tag next"
   }
 }

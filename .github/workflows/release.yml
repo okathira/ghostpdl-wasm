@@ -84,7 +84,7 @@ jobs:
           PRERELEASE: ${{ steps.release_meta.outputs.prerelease }}
         run: |
           if [ "$PRERELEASE" = "true" ]; then
-            npm run prerelease
+            npm run deploy:next
           else
-            npm run release
+            npm run deploy
           fi
