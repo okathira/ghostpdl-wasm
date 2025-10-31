@@ -15,8 +15,11 @@ make distclean 2>/dev/null || true
 echo "3. Installing autoconf..."
 apt-get update && apt-get install --yes autoconf=2.71-2
 
+BINARYEN_EXTRA_PASSES_DEFAULT='--strip-debug,--strip-producers,--dce,--remove-unused-module-elements,--vacuum,--converge'
+BINARYEN_EXTRA_PASSES="${BINARYEN_EXTRA_PASSES:-${BINARYEN_EXTRA_PASSES_DEFAULT}}"
 EM_OPT_FLAGS="${EM_OPT_FLAGS:--Os -g0 -flto -ffunction-sections -fdata-sections}"
 EM_LD_FLAGS="${EM_LD_FLAGS:--sFILESYSTEM=1 -sEXPORTED_RUNTIME_METHODS=FS,callMain -sMODULARIZE=1 -sEXPORT_ES6=1 -sINVOKE_RUN=0 -sALLOW_MEMORY_GROWTH=1}"
+EM_LD_FLAGS="${EM_LD_FLAGS} -sBINARYEN_EXTRA_PASSES=${BINARYEN_EXTRA_PASSES}"
 GS_SELECTED_DRIVERS="${GS_SELECTED_DRIVERS:-BMP,JPEG,PNG,PS,TIFF}"
 GS_CONFIGURE_FLAGS="${GS_CONFIGURE_FLAGS:---disable-contrib --disable-cups --disable-dbus --disable-fontconfig --disable-gtk --without-libpaper --without-libidn --without-pdftoraster --without-ijs --without-x --with-drivers=${GS_SELECTED_DRIVERS}}"
 
