@@ -38,7 +38,7 @@ INPUT_WASM="${1:-${DIST_DIR}/gs.wasm}"
 OUTPUT_WASM="${2:-${DIST_DIR}/gs.binaryen.wasm}"
 WASM_OPT_BIN="${WASM_OPT_BIN:-wasm-opt}"
 WASM_OPT_FEATURE_FLAGS="${WASM_OPT_FEATURE_FLAGS:---detect-features --enable-bulk-memory --enable-nontrapping-float-to-int}"
-WASM_OPT_FLAGS="${WASM_OPT_FLAGS:--Os --strip-debug --strip-producers}"
+WASM_OPT_FLAGS="${WASM_OPT_FLAGS:--Os --strip-debug --strip-producers --dce --remove-unused-module-elements --vacuum --converge}"
 
 echo "Input:  ${INPUT_WASM}"
 echo "Output: ${OUTPUT_WASM}"
@@ -58,7 +58,7 @@ mkdir -p "$(dirname "${OUTPUT_WASM}")"
 
 "${WASM_OPT_BIN}" ${WASM_OPT_FEATURE_FLAGS} ${WASM_OPT_FLAGS} "${INPUT_WASM}" -o "${OUTPUT_WASM}"
 
-ls -lh "${INPUT_WASM}" "${OUTPUT_WASM}"
+ls -l "${INPUT_WASM}" "${OUTPUT_WASM}"
 
 echo "=== wasm-opt finished ==="
 

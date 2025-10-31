@@ -40,6 +40,9 @@
     "build:docker-ps": "docker run --rm -v ${pwd}:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
     "build:docker-cmd": "docker run --rm -v %cd%:/src emscripten/emsdk:4.0.13 bash -lc './compile.sh'",
     "build": "./compile.sh",
+    "optimize:docker-ps": "docker run --rm -v ${pwd}:/src emscripten/emsdk:4.0.13 bash -lc './optimize_with_binaryen.sh'",
+    "optimize:docker-cmd": "docker run --rm -v %cd%:/src emscripten/emsdk:4.0.13 bash -lc './optimize_with_binaryen.sh'",
+    "optimize": "./optimize_with_binaryen.sh",
     "deploy:dry": "npm publish --dry-run",
     "deploy": "npm publish --access public"
   }
