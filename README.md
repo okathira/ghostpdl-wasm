@@ -77,6 +77,15 @@ import wasm from "@okathira/ghostpdl-wasm/gs.wasm";
 import js from "@okathira/ghostpdl-wasm/gs.js"; // the same as `import loadWASM from "@okathira/ghostpdl-wasm";`
 ```
 
+### Runtime notes
+
+The published artifacts are built with the following key options:
+
+- `EM_LD_FLAGS`: `-sFILESYSTEM=1 -sEXPORTED_RUNTIME_METHODS=FS,callMain -sMODULARIZE=1 -sEXPORT_ES6=1 -sINVOKE_RUN=0 -sALLOW_MEMORY_GROWTH=1 -sBINARYEN_EXTRA_PASSES=...`
+- `GS_CONFIGURE_FLAGS`: `--disable-contrib --disable-cups --disable-dbus --disable-fontconfig --disable-gtk --without-libpaper --without-libidn --without-pdftoraster --without-ijs --without-x --with-drivers=BMP,JPEG,PNG,PS,TIFF`
+
+In short, `Module.FS` and `Module.callMain` are preserved for the usage shown above, and Ghostscript drivers are limited to the listed file-output devices.
+
 ## How to test locally
 
 This repository uses a git submodule for GhostPDL.
@@ -111,9 +120,10 @@ After linking, import `@okathira/ghostpdl-wasm` in the consumer project as you w
 
 ## TODO
 
-- [ ] Optimize artifacts
+- [x] Optimize artifacts
   - [x] ghostscript build options
-  - [ ] emscripten build options
+  - [x] emscripten build options
+  - [x] Closure Compiler
 - [ ] Auto-update dependencies on GitHub Actions
 - [ ] Add type definitions
 - [ ] Optimize build process (e.g. remove apt-get install)
