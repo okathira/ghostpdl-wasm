@@ -1,6 +1,6 @@
 {
   "name": "@okathira/ghostpdl-wasm",
-  "version": "1.1.0-0",
+  "version": "1.1.0",
   "description": "GhostPDL (Ghostscript) WASM built with Emscripten",
   "keywords": [
     "ghostscript",
