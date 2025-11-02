@@ -21,6 +21,9 @@ jobs:
           submodules: true
           fetch-depth: 0
 
+      - name: Install dependencies for build checks
+        run: npm ci
+
       - name: Build
         run: ./compile.sh
 
