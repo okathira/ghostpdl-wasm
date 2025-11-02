@@ -77,7 +77,18 @@ import wasm from "@okathira/ghostpdl-wasm/gs.wasm";
 import js from "@okathira/ghostpdl-wasm/gs.js"; // the same as `import loadWASM from "@okathira/ghostpdl-wasm";`
 ```
 
-### Runtime notes
+## TypeScript support
+
+Type definitions ship with the package. Importing `@okathira/ghostpdl-wasm`
+provides typed factory and module helpers, including the virtual filesystem
+(`Module.FS`) and `Module.callMain` entry point.
+
+The default export matches the factory emitted by Emscripten (`Module`), and
+the bundled declarations extend `EmscriptenModule` from `@types/emscripten` to
+surface `GhostscriptModule` and `GhostscriptModuleFactory` for reuse in your
+own typings when needed.
+
+## Runtime notes
 
 The published artifacts are built with the following key options:
 
@@ -125,7 +136,7 @@ After linking, import `@okathira/ghostpdl-wasm` in the consumer project as you w
   - [x] emscripten build options
   - [x] Closure Compiler
 - [ ] Auto-update dependencies on GitHub Actions
-- [ ] Add type definitions
+- [x] Add type definitions
 - [ ] Optimize build process (e.g. remove apt-get install)
 
 ## License
